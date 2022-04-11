@@ -21,6 +21,7 @@
  */
 #define _GNU_SOURCE
 
+#include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
@@ -97,6 +98,16 @@ static void netty_io_uring_linuxsocket_setInterface(JNIEnv* env, jclass clazz, j
         netty_unix_socket_setOption(env, fd, IPPROTO_IP, IP_MULTICAST_IF, &interfaceIpAddr->sin_addr, sizeof(interfaceIpAddr->sin_addr));
     }
 }
+
+static jint netty_io_uring_linuxsocket_setBlocking(JNIEnv* env, jclass clazz, jint fd) {
+        int flags = fcntl(fd, F_GETFL, 0);
+        if (flags<0){
+            return flags;
+        }
+
+        return fcntl(fd, F_SETFL, flags & ~O_NONBLOCK);
+}
+
 
 static void netty_io_uring_linuxsocket_setTcpCork(JNIEnv* env, jclass clazz, jint fd, jint optval) {
     netty_unix_socket_setOption(env, fd, IPPROTO_TCP, TCP_CORK, &optval, sizeof(optval));
@@ -663,7 +674,8 @@ static const JNINativeMethod fixed_method_table[] = {
   { "joinGroup", "(IZ[B[BII)V", (void *) netty_io_uring_linuxsocket_joinGroup },
   { "joinSsmGroup", "(IZ[B[BII[B)V", (void *) netty_io_uring_linuxsocket_joinSsmGroup },
   { "leaveGroup", "(IZ[B[BII)V", (void *) netty_io_uring_linuxsocket_leaveGroup },
-  { "leaveSsmGroup", "(IZ[B[BII[B)V", (void *) netty_io_uring_linuxsocket_leaveSsmGroup }
+  { "leaveSsmGroup", "(IZ[B[BII[B)V", (void *) netty_io_uring_linuxsocket_leaveSsmGroup },
+  { "setBlocking", "(I)I", (void *) netty_io_uring_linuxsocket_setBlocking }
 };
 
 static const jint fixed_method_table_size = sizeof(fixed_method_table) / sizeof(fixed_method_table[0]);

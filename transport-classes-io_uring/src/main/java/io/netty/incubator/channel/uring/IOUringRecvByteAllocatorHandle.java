@@ -28,6 +28,8 @@ final class IOUringRecvByteAllocatorHandle extends RecvByteBufAllocator.Delegati
 
     IOUringRecvByteAllocatorHandle(RecvByteBufAllocator.ExtendedHandle handle) {
         super(handle);
+
+        System.out.println(handle.getClass());
     }
 
     private boolean rdHupReceived;

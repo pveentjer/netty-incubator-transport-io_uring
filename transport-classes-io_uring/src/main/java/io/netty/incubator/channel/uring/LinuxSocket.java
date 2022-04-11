@@ -51,6 +51,12 @@ final class LinuxSocket extends Socket {
         return super.markClosed();
     }
 
+    void setBlocking() throws IOException {
+        if(setBlocking(intValue())!=0){
+            throw new IOException("NetworkInterface could not be configured as blocking");
+        }
+    }
+
     void setTimeToLive(int ttl) throws IOException {
         setTimeToLive(intValue(), ttl);
     }
@@ -375,4 +381,5 @@ final class LinuxSocket extends Socket {
     private static native int getIpMulticastLoop(int fd, boolean ipv6) throws IOException;
     private static native void setIpMulticastLoop(int fd, boolean ipv6, int enabled) throws IOException;
     private static native void setTimeToLive(int fd, int ttl) throws IOException;
+    private static native int setBlocking(int fd) throws IOException;
 }

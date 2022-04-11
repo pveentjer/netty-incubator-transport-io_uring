@@ -245,7 +245,7 @@ final class IOUringSubmissionQueue {
             if (ret < 0) {
                 throw new RuntimeException("ioUringEnter syscall returned " + ret);
             }
-            logger.warn("Not all submissions succeeded");
+            logger.warn(this+ " Not all submissions succeeded: ret:"+ret+" toSubmit:"+toSubmit);
         }
         return ret;
     }
