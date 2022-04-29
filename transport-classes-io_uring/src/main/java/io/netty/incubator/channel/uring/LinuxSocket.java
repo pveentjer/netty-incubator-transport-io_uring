@@ -33,16 +33,16 @@ import java.util.Enumeration;
 /**
  * A socket which provides access Linux native methods.
  */
-final class LinuxSocket extends Socket {
+public final class LinuxSocket extends Socket {
     static final InetAddress INET6_ANY = unsafeInetAddrByName("::");
     private static final InetAddress INET_ANY = unsafeInetAddrByName("0.0.0.0");
     private static final long MAX_UINT32_T = 0xFFFFFFFFL;
 
-    LinuxSocket(int fd) {
+    public LinuxSocket(int fd) {
         super(fd);
     }
 
-    InternetProtocolFamily family() {
+    public InternetProtocolFamily family() {
         return ipv6 ? InternetProtocolFamily.IPv6 : InternetProtocolFamily.IPv4;
     }
 
@@ -51,22 +51,22 @@ final class LinuxSocket extends Socket {
         return super.markClosed();
     }
 
-    void setBlocking() throws IOException {
+    public void setBlocking() throws IOException {
         if(setBlocking(intValue())!=0){
             throw new IOException("NetworkInterface could not be configured as blocking");
         }
     }
 
-    void setTimeToLive(int ttl) throws IOException {
+    public void setTimeToLive(int ttl) throws IOException {
         setTimeToLive(intValue(), ttl);
     }
 
-    void setInterface(InetAddress address) throws IOException {
+    public void setInterface(InetAddress address) throws IOException {
         final NativeInetAddress a = NativeInetAddress.newInstance(address);
         setInterface(intValue(), ipv6, a.address(), a.scopeId(), interfaceIndex(address));
     }
 
-    void setNetworkInterface(NetworkInterface netInterface) throws IOException {
+    public void setNetworkInterface(NetworkInterface netInterface) throws IOException {
         InetAddress address = deriveInetAddress(netInterface, family() == InternetProtocolFamily.IPv6);
         if (address.equals(family() == InternetProtocolFamily.IPv4 ? INET_ANY : INET6_ANY)) {
             throw new IOException("NetworkInterface does not support " + family());
@@ -75,7 +75,7 @@ final class LinuxSocket extends Socket {
         setInterface(intValue(), ipv6, nativeAddress.address(), nativeAddress.scopeId(), interfaceIndex(netInterface));
     }
 
-    InetAddress getInterface() throws IOException {
+    public InetAddress getInterface() throws IOException {
         NetworkInterface inf = getNetworkInterface();
         if (inf != null) {
             Enumeration<InetAddress> addresses = SocketUtils.addressesFromNetworkInterface(inf);
@@ -86,7 +86,7 @@ final class LinuxSocket extends Socket {
         return null;
     }
 
-    NetworkInterface getNetworkInterface() throws IOException {
+    public NetworkInterface getNetworkInterface() throws IOException {
         int ret = getInterface(intValue(), ipv6);
         if (ipv6) {
             return PlatformDependent.javaVersion() >= 7 ? NetworkInterface.getByIndex(ret) : null;
@@ -110,7 +110,7 @@ final class LinuxSocket extends Socket {
         }
     }
 
-    void joinGroup(InetAddress group, NetworkInterface netInterface, InetAddress source) throws IOException {
+    public void joinGroup(InetAddress group, NetworkInterface netInterface, InetAddress source) throws IOException {
         final NativeInetAddress g = NativeInetAddress.newInstance(group);
         final boolean isIpv6 = group instanceof Inet6Address;
         final NativeInetAddress i = NativeInetAddress.newInstance(deriveInetAddress(netInterface, isIpv6));
@@ -123,7 +123,7 @@ final class LinuxSocket extends Socket {
         }
     }
 
-    void leaveGroup(InetAddress group, NetworkInterface netInterface, InetAddress source) throws IOException {
+    public void leaveGroup(InetAddress group, NetworkInterface netInterface, InetAddress source) throws IOException {
         final NativeInetAddress g = NativeInetAddress.newInstance(group);
         final boolean isIpv6 = group instanceof Inet6Address;
         final NativeInetAddress i = NativeInetAddress.newInstance(deriveInetAddress(netInterface, isIpv6));
@@ -150,139 +150,139 @@ final class LinuxSocket extends Socket {
         return -1;
     }
 
-    void setTcpDeferAccept(int deferAccept) throws IOException {
+    public void setTcpDeferAccept(int deferAccept) throws IOException {
         setTcpDeferAccept(intValue(), deferAccept);
     }
 
-    void setTcpQuickAck(boolean quickAck) throws IOException {
+    public void setTcpQuickAck(boolean quickAck) throws IOException {
         setTcpQuickAck(intValue(), quickAck ? 1 : 0);
     }
 
-    void setTcpCork(boolean tcpCork) throws IOException {
+    public void setTcpCork(boolean tcpCork) throws IOException {
         setTcpCork(intValue(), tcpCork ? 1 : 0);
     }
 
-    void setSoBusyPoll(int loopMicros) throws IOException {
+    public void setSoBusyPoll(int loopMicros) throws IOException {
         setSoBusyPoll(intValue(), loopMicros);
     }
 
-    void setTcpNotSentLowAt(long tcpNotSentLowAt) throws IOException {
+    public void setTcpNotSentLowAt(long tcpNotSentLowAt) throws IOException {
         if (tcpNotSentLowAt < 0 || tcpNotSentLowAt > MAX_UINT32_T) {
             throw new IllegalArgumentException("tcpNotSentLowAt must be a uint32_t");
         }
         setTcpNotSentLowAt(intValue(), (int) tcpNotSentLowAt);
     }
 
-    void setTcpFastOpen(int tcpFastopenBacklog) throws IOException {
+    public void setTcpFastOpen(int tcpFastopenBacklog) throws IOException {
         setTcpFastOpen(intValue(), tcpFastopenBacklog);
     }
 
-    void setTcpFastOpenConnect(boolean tcpFastOpenConnect) throws IOException {
+    public void setTcpFastOpenConnect(boolean tcpFastOpenConnect) throws IOException {
         setTcpFastOpenConnect(intValue(), tcpFastOpenConnect ? 1 : 0);
     }
 
-    boolean isTcpFastOpenConnect() throws IOException {
+    public boolean isTcpFastOpenConnect() throws IOException {
         return isTcpFastOpenConnect(intValue()) != 0;
     }
 
-    void setTcpKeepIdle(int seconds) throws IOException {
+    public void setTcpKeepIdle(int seconds) throws IOException {
         setTcpKeepIdle(intValue(), seconds);
     }
 
-    void setTcpKeepIntvl(int seconds) throws IOException {
+    public void setTcpKeepIntvl(int seconds) throws IOException {
         setTcpKeepIntvl(intValue(), seconds);
     }
 
-    void setTcpKeepCnt(int probes) throws IOException {
+    public void setTcpKeepCnt(int probes) throws IOException {
         setTcpKeepCnt(intValue(), probes);
     }
 
-    void setTcpUserTimeout(int milliseconds) throws IOException {
+    public void setTcpUserTimeout(int milliseconds) throws IOException {
         setTcpUserTimeout(intValue(), milliseconds);
     }
 
-    void setIpFreeBind(boolean enabled) throws IOException {
+    public void setIpFreeBind(boolean enabled) throws IOException {
         setIpFreeBind(intValue(), enabled ? 1 : 0);
     }
 
-    void setIpTransparent(boolean enabled) throws IOException {
+    public void setIpTransparent(boolean enabled) throws IOException {
         setIpTransparent(intValue(), enabled ? 1 : 0);
     }
 
-    void setIpRecvOrigDestAddr(boolean enabled) throws IOException {
+    public void setIpRecvOrigDestAddr(boolean enabled) throws IOException {
         setIpRecvOrigDestAddr(intValue(), enabled ? 1 : 0);
     }
 
-    int getTimeToLive() throws IOException {
+    public int getTimeToLive() throws IOException {
         return getTimeToLive(intValue());
     }
 
-    void getTcpInfo(IOUringTcpInfo info) throws IOException {
+    public void getTcpInfo(IOUringTcpInfo info) throws IOException {
         getTcpInfo(intValue(), info.info);
     }
 
-    void setTcpMd5Sig(InetAddress address, byte[] key) throws IOException {
+    public void setTcpMd5Sig(InetAddress address, byte[] key) throws IOException {
         final NativeInetAddress a = NativeInetAddress.newInstance(address);
         setTcpMd5Sig(intValue(), ipv6, a.address(), a.scopeId(), key);
     }
 
-    boolean isTcpCork() throws IOException  {
+    public boolean isTcpCork() throws IOException  {
         return isTcpCork(intValue()) != 0;
     }
 
-    int getSoBusyPoll() throws IOException  {
+    public int getSoBusyPoll() throws IOException  {
         return getSoBusyPoll(intValue());
     }
 
-    int getTcpDeferAccept() throws IOException {
+    public int getTcpDeferAccept() throws IOException {
         return getTcpDeferAccept(intValue());
     }
 
-    boolean isTcpQuickAck() throws IOException {
+    public boolean isTcpQuickAck() throws IOException {
         return isTcpQuickAck(intValue()) != 0;
     }
 
-    long getTcpNotSentLowAt() throws IOException {
+    public long getTcpNotSentLowAt() throws IOException {
         return getTcpNotSentLowAt(intValue()) & MAX_UINT32_T;
     }
 
-    int getTcpKeepIdle() throws IOException {
+    public int getTcpKeepIdle() throws IOException {
         return getTcpKeepIdle(intValue());
     }
 
-    int getTcpKeepIntvl() throws IOException {
+    public int getTcpKeepIntvl() throws IOException {
         return getTcpKeepIntvl(intValue());
     }
 
-    int getTcpKeepCnt() throws IOException {
+    public int getTcpKeepCnt() throws IOException {
         return getTcpKeepCnt(intValue());
     }
 
-    int getTcpUserTimeout() throws IOException {
+    public int getTcpUserTimeout() throws IOException {
         return getTcpUserTimeout(intValue());
     }
 
-    boolean isIpFreeBind() throws IOException {
+    public boolean isIpFreeBind() throws IOException {
         return isIpFreeBind(intValue()) != 0;
     }
 
-    boolean isIpTransparent() throws IOException {
+    public boolean isIpTransparent() throws IOException {
         return isIpTransparent(intValue()) != 0;
     }
 
-    boolean isIpRecvOrigDestAddr() throws IOException {
+    public boolean isIpRecvOrigDestAddr() throws IOException {
         return isIpRecvOrigDestAddr(intValue()) != 0;
     }
 
-    PeerCredentials getPeerCredentials() throws IOException {
+    public PeerCredentials getPeerCredentials() throws IOException {
         return getPeerCredentials(intValue());
     }
 
-    boolean isLoopbackModeDisabled() throws IOException {
+    public boolean isLoopbackModeDisabled() throws IOException {
         return getIpMulticastLoop(intValue(), ipv6) == 0;
     }
 
-    void setLoopbackModeDisabled(boolean loopbackModeDisabled) throws IOException {
+    public void setLoopbackModeDisabled(boolean loopbackModeDisabled) throws IOException {
         setIpMulticastLoop(intValue(), ipv6, loopbackModeDisabled ? 0 : 1);
     }
 
@@ -301,7 +301,7 @@ final class LinuxSocket extends Socket {
         return ipAny;
     }
 
-    boolean isIpv6() {
+    public boolean isIpv6() {
         return ipv6;
     }
 

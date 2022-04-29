@@ -25,15 +25,15 @@ import java.net.UnknownHostException;
 
 import static io.netty.util.internal.PlatformDependent.BIG_ENDIAN_NATIVE_ORDER;
 
-final class SockaddrIn {
-    static final byte[] IPV4_MAPPED_IPV6_PREFIX = {
+public final class SockaddrIn {
+    public static final byte[] IPV4_MAPPED_IPV6_PREFIX = {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, (byte) 0xff, (byte) 0xff };
-    static final int IPV4_ADDRESS_LENGTH = 4;
-    static final int IPV6_ADDRESS_LENGTH = 16;
+    public static final int IPV4_ADDRESS_LENGTH = 4;
+    public static final int IPV6_ADDRESS_LENGTH = 16;
 
     private SockaddrIn() { }
 
-    static int write(boolean ipv6, long memory, InetSocketAddress address) {
+    public static int write(boolean ipv6, long memory, InetSocketAddress address) {
         if (ipv6) {
             return SockaddrIn.writeIPv6(memory, address.getAddress(), address.getPort());
         } else {
@@ -55,7 +55,7 @@ final class SockaddrIn {
      * };
      *
      */
-    static int writeIPv4(long memory, InetAddress address, int port) {
+    public static int writeIPv4(long memory, InetAddress address, int port) {
         PlatformDependent.setMemory(memory, Native.SIZEOF_SOCKADDR_IN, (byte) 0);
 
         PlatformDependent.putShort(memory + Native.SOCKADDR_IN_OFFSETOF_SIN_FAMILY, Native.AF_INET);
@@ -85,7 +85,7 @@ final class SockaddrIn {
      *     unsigned char s6_addr[16];   // IPv6 address
      * };
      */
-    static int writeIPv6(long memory, InetAddress address, int port) {
+    public static int writeIPv6(long memory, InetAddress address, int port) {
         PlatformDependent.setMemory(memory, Native.SIZEOF_SOCKADDR_IN6, (byte) 0);
         PlatformDependent.putShort(memory + Native.SOCKADDR_IN6_OFFSETOF_SIN6_FAMILY, Native.AF_INET6);
         PlatformDependent.putShort(memory + Native.SOCKADDR_IN6_OFFSETOF_SIN6_PORT, handleNetworkOrder((short) port));
@@ -107,7 +107,7 @@ final class SockaddrIn {
         return Native.SIZEOF_SOCKADDR_IN6;
     }
 
-    static InetSocketAddress readIPv4(long memory, byte[] tmpArray) {
+    public static InetSocketAddress readIPv4(long memory, byte[] tmpArray) {
         assert tmpArray.length == IPV4_ADDRESS_LENGTH;
         int port = handleNetworkOrder(PlatformDependent.getShort(
                 memory + Native.SOCKADDR_IN_OFFSETOF_SIN_PORT)) & 0xFFFF;
@@ -120,7 +120,7 @@ final class SockaddrIn {
         }
     }
 
-    static InetSocketAddress readIPv6(long memory, byte[] ipv6Array, byte[] ipv4Array) {
+    public static InetSocketAddress readIPv6(long memory, byte[] ipv6Array, byte[] ipv4Array) {
         assert ipv6Array.length == IPV6_ADDRESS_LENGTH;
         assert ipv4Array.length == IPV4_ADDRESS_LENGTH;
 
