@@ -187,6 +187,10 @@ public final class IOUringSubmissionQueue {
         return enqueueSqe(Native.IORING_OP_READ, flags(), 0, fd, bufferAddress + pos, limit - pos, 0, extraData);
     }
 
+    public boolean addRead(int fd, long offset, long bufferAddress, int pos, int limit, short extraData) {
+        return enqueueSqe(Native.IORING_OP_READ, flags(), 0, fd, bufferAddress + pos, limit - pos, offset, extraData);
+    }
+
     public boolean addEventFdRead(int fd, long bufferAddress, int pos, int limit, short extraData) {
         return enqueueSqe(Native.IORING_OP_READ, 0, 0, fd, bufferAddress + pos, limit - pos, 0, extraData);
     }
