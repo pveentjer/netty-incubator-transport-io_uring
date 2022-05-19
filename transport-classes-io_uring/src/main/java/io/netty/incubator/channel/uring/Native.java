@@ -170,7 +170,11 @@ public final class Native {
     }
 
     public static RingBuffer createRingBuffer(int ringSize, int iosqeAsyncThreshold) {
-        long[][] values = ioUringSetup(ringSize);
+        return createRingBuffer(ringSize,iosqeAsyncThreshold,0);
+    }
+
+    public static RingBuffer createRingBuffer(int ringSize, int iosqeAsyncThreshold, int flags) {
+        long[][] values = ioUringSetup(ringSize, flags);
         assert values.length == 2;
         long[] submissionQueueArgs = values[0];
         assert submissionQueueArgs.length == 11;
@@ -259,7 +263,7 @@ public final class Native {
     }
 
     private static native boolean ioUringProbe(int ringFd, int[] ios);
-    private static native long[][] ioUringSetup(int entries);
+    private static native long[][] ioUringSetup(int entries, int flags);
 
     public static native int ioUringEnter(int ringFd, int toSubmit, int minComplete, int flags);
 
