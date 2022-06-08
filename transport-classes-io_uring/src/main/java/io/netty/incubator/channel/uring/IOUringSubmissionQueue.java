@@ -110,7 +110,7 @@ public final class IOUringSubmissionQueue {
         return numHandledFds < iosqeAsyncThreshold ? 0 : Native.IOSQE_ASYNC;
     }
 
-    private boolean enqueueSqe(byte op, int flags, int rwFlags, int fd,
+    public boolean enqueueSqe(byte op, int flags, int rwFlags, int fd,
                                long bufferAddress, int length, long offset, short data) {
         int pending = tail - head;
         boolean submit = pending == ringEntries;

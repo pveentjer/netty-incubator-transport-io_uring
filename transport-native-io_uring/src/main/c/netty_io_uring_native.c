@@ -512,6 +512,10 @@ static jbyte netty_io_uring_ioringOpRecvmsg(JNIEnv* env, jclass clazz) {
     return IORING_OP_RECVMSG;
 }
 
+static jbyte netty_io_uring_ioringOpFsync(JNIEnv* env, jclass clazz) {
+    return IORING_OP_FSYNC;
+}
+
 static jint netty_io_uring_ioringEnterGetevents(JNIEnv* env, jclass clazz) {
     return IORING_ENTER_GETEVENTS;
 }
@@ -589,6 +593,8 @@ static const JNINativeMethod statically_referenced_fixed_method_table[] = {
   { "ioringOpClose", "()B", (void *) netty_io_uring_ioringOpClose },
   { "ioringOpSendmsg", "()B", (void *) netty_io_uring_ioringOpSendmsg },
   { "ioringOpRecvmsg", "()B", (void *) netty_io_uring_ioringOpRecvmsg },
+  { "ioringOpFsync", "()B", (void *) netty_io_uring_ioringOpFsync },
+  { "ioringEnterGetevents", "()I", (void *) netty_io_uring_ioringEnterGetevents },
   { "ioringEnterGetevents", "()I", (void *) netty_io_uring_ioringEnterGetevents },
   { "iosqeAsync", "()I", (void *) netty_io_uring_iosqeAsync },
   { "msgDontwait", "()I", (void *) netty_io_uring_msgDontwait },
