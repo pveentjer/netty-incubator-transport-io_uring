@@ -146,6 +146,7 @@ public final class Native {
     public static final byte IORING_OP_SENDMSG = NativeStaticallyReferencedJniMethods.ioringOpSendmsg();
     public static final byte IORING_OP_RECVMSG = NativeStaticallyReferencedJniMethods.ioringOpRecvmsg();
     public static final byte IORING_OP_FSYNC = NativeStaticallyReferencedJniMethods.ioringOpFsync();
+    public static final byte IORING_OP_FALLOCATE = NativeStaticallyReferencedJniMethods.ioringOpFallocate();
     public static final int IORING_ENTER_GETEVENTS = NativeStaticallyReferencedJniMethods.ioringEnterGetevents();
     public static final int IOSQE_ASYNC = NativeStaticallyReferencedJniMethods.iosqeAsync();
     public static final int MSG_DONTWAIT = NativeStaticallyReferencedJniMethods.msgDontwait();
