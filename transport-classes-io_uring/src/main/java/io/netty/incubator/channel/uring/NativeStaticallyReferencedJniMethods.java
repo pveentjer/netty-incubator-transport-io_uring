@@ -64,6 +64,7 @@ final class NativeStaticallyReferencedJniMethods {
     static native int pollin();
     static native int pollout();
     static native int pollrdhup();
+    static native byte ioringOpNop();
     static native byte ioringOpWritev();
     static native byte ioringOpPollAdd();
     static native byte ioringOpPollRemove();

@@ -134,6 +134,7 @@ public final class Native {
     public static final int POLLRDHUP = NativeStaticallyReferencedJniMethods.pollrdhup();
     public static final int ERRNO_ECANCELED_NEGATIVE = -NativeStaticallyReferencedJniMethods.ecanceled();
     public static final int ERRNO_ETIME_NEGATIVE = -NativeStaticallyReferencedJniMethods.etime();
+    public static final byte IORING_OP_NOP = NativeStaticallyReferencedJniMethods.ioringOpNop();
     public static final byte IORING_OP_POLL_ADD = NativeStaticallyReferencedJniMethods.ioringOpPollAdd();
     public static final byte IORING_OP_TIMEOUT = NativeStaticallyReferencedJniMethods.ioringOpTimeout();
     public static final byte IORING_OP_ACCEPT = NativeStaticallyReferencedJniMethods.ioringOpAccept();

@@ -468,6 +468,10 @@ static jint netty_io_uring_pollrdhup(JNIEnv* env, jclass clazz) {
     return POLLRDHUP;
 }
 
+static jbyte netty_io_uring_ioringOpNop(JNIEnv* env, jclass clazz) {
+    return IORING_OP_NOP;
+}
+
 static jbyte netty_io_uring_ioringOpWritev(JNIEnv* env, jclass clazz) {
     return IORING_OP_WRITEV;
 }
@@ -587,6 +591,7 @@ static const JNINativeMethod statically_referenced_fixed_method_table[] = {
   { "pollin", "()I", (void *) netty_io_uring_pollin },
   { "pollout", "()I", (void *) netty_io_uring_pollout },
   { "pollrdhup", "()I", (void *) netty_io_uring_pollrdhup },
+  { "ioringOpNop", "()B", (void *) netty_io_uring_ioringOpNop },
   { "ioringOpWritev", "()B", (void *) netty_io_uring_ioringOpWritev },
   { "ioringOpPollAdd", "()B", (void *) netty_io_uring_ioringOpPollAdd },
   { "ioringOpPollRemove", "()B", (void *) netty_io_uring_ioringOpPollRemove },
